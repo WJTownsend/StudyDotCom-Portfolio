@@ -1,0 +1,89 @@
+/* NOTE TO GRADER: Submission directions require assignments be provided in 
+* Word, PDF, or .txt. This is submitted as a text file, as a result. If you
+* would like the .java file to grade it programmatically, let me know */
+package com.townsend;
+
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class Main {
+
+    /** This program, written for Study.Com's CS115 class, prompts the user for up to 10
+     * numeric quiz grades. Once entered, the program prints all grades and prints an
+     * average score and letter grade. Input 999 to quit.
+     * Function takes no arguments, returns no values. **/
+    public static void main(String[] args) {
+        // Initialize variables that I'll use later to calculate the average grade
+        double sum = 0;
+        int count = 0;
+        // Set default letter grade (will change if appropriate)
+        char letterGrade = 'F';
+        /* The assignment prompt stipulates that I must print out the program specifications to the user*/
+        System.out.println("===== WELCOME TO MY CS115 PROJECT =====");
+        System.out.println("This program will receive up to 10 numeric quiz grades from the user.");
+        System.out.println("The user may enter 999 at the input to stop input.");
+        System.out.println("Once all grades are entered, a loop will print all entered grades.");
+        System.out.println("The program will then compute the average quiz grade.");
+        System.out.println("The program will also provide a corresponding letter grade for that average.");
+        /* Generate an ArrayList to store grades in, because number of grades entered can vary */
+        ArrayList <Double> grades = new ArrayList <>(0);
+        /* Execute loop to collect grades, while less than 10 grades have been saved to the ArrayList */
+        while (grades.size() < 10) {
+            Scanner scanner = new Scanner(System.in);
+            // Initialize temporary variable to hold & measure input
+            double currentInput;
+            // Prompt user for an input quiz score
+            System.out.print("Please enter a quiz score (999 to quit): ");
+            try {
+                // Attempt to read score as a Double
+                currentInput = scanner.nextDouble();
+                // If input cannot be read, notify the user and restart prompt
+            } catch (InputMismatchException e) {
+                System.out.println("ERROR: Input grades must be numeric!");
+                continue;
+            }
+            // If user types 999, break the loop
+            if (currentInput == 999) {
+                System.out.println("Ending input...");
+                break;
+            }
+            // Error Handling: Not required by assignment, but grades can't be negative
+            else if (currentInput < 0) {
+                System.out.println("ERROR: Input grades cannot be negative!");
+            }
+            // Error Handling: Not required by assignment, but reject grades above 100
+            else if (currentInput > 100) {
+                System.out.println("ERROR: Input grades cannot be above 100!");
+            }
+            // If grade has been accepted, append to the Array List and notify user
+            else {
+                grades.add(currentInput);
+                System.out.println("Recorded grade #" + grades.size());
+            }
+        }
+        // Notify user of how many grades were collected at conclusion of loop
+        System.out.println(grades.size() + " grades collected. Printing received grades:");
+        /* Use For:Each loop to print all grades received. For each grade, add that score to
+        * the sum and increment the counter, so average score can be calculated. */
+        for (Double grade : grades) {
+            System.out.println(grade);
+            sum += grade;
+            count ++;
+        }
+        // Calculate average numeric grade
+        double averageGrade = (sum / count);
+        // Replace default letterGrade with appropriate letterGrade
+        if (averageGrade >= 90)
+            letterGrade = 'A';
+        else if (averageGrade >= 80)
+            letterGrade = 'B';
+        else if (averageGrade >= 70)
+            letterGrade = 'C';
+        else if (averageGrade >= 60)
+            letterGrade = 'D';
+        // Print out numeric and letter grade results to user
+        System.out.println("The average quiz score is: " + averageGrade);
+        System.out.println("That score earns the student a letter grade of: " + letterGrade);
+    }
+}
